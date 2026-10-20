@@ -61,11 +61,24 @@ CSV Mercado Livre → data_loader.py (limpeza) → analytics.py (KPIs/agregaçõ
 
 ## Pré-requisitos
 
-- Python 3.12 + `.venv` local
-- Node.js 18+ e npm
+- **Via Docker (recomendado):** Docker e Docker Compose
+- **Execução local:** Python 3.12 + `.venv` local, Node.js 18+ e npm
 - CSV no padrão Mercado Livre (UTF-8, 28 colunas) — ex.: `data/sales_2023.csv`
 
 ## Instalação e Quickstart
+
+### Com Docker Compose
+
+```bash
+# Subir backend (FastAPI :8000) + frontend (Nginx :5173)
+docker compose up --build
+```
+
+- **Dashboard:** `http://localhost:5173`
+- **API / Swagger:** `http://localhost:8000/docs`
+- **Parar os containers:** `docker compose down`
+
+### Execução Local (sem Docker)
 
 ```bash
 # 1. Backend — dependências de produção
@@ -163,7 +176,8 @@ Ordem oficial de verificação (`AGENTS.md`):
 │   │   ├── data_loader.py  # ingestão/limpeza + dataset_store
 │   │   ├── analytics.py    # KPIs, séries, rankings, UF, Ads
 │   │   └── schemas.py      # Pydantic (Health, Filters, Dashboard, Orders)
-│   └── tests/              # test_data_loader/ analytics/ api
+│   ├── tests/              # test_data_loader/ analytics/ api
+│   └── Dockerfile          # container Python 3.12 + Uvicorn
 ├── frontend/
 │   ├── src/
 │   │   ├── api/client.ts   # cliente tipado da API
@@ -171,10 +185,14 @@ Ordem oficial de verificação (`AGENTS.md`):
 │   │   ├── hooks/          # useDebouncedValue, useTheme
 │   │   ├── types/          # DashboardFilterState, DashboardResponse...
 │   │   └── utils/          # formatCurrencyBRL, formatDateBR, formatPercentBR, exportOrdersToCsv
-│   └── vite.config.ts      # proxy /api → 127.0.0.1:8000
+│   ├── Dockerfile          # multi-stage (Node build → Nginx)
+│   ├── nginx.conf          # SPA fallback + proxy reverso /api → backend:8000
+│   └── vite.config.ts      # proxy /api → 127.0.0.1:8000 (dev)
 ├── data/
 │   └── sales_2023.csv      # dataset padrão (99 linhas, UTF-8)
 ├── docs/screenshots/       # screenshots do README
+├── docker-compose.yml      # orquestração backend (:8000) + frontend (:5173)
+├── .dockerignore           # exclusões de contexto Docker
 ├── requirements.txt        # prod: fastapi, uvicorn, pandas, pydantic, python-multipart
 ├── requirements_dev.txt    # dev: -r requirements.txt + pytest, httpx, ruff
 ├── pyproject.toml          # pytest + ruff config
