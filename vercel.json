@@ -8,7 +8,7 @@
       "functions": {
         "backend/app/main.py": {
           "maxDuration": 10,
-          "excludeFiles": "{frontend/**,node_modules/**,.venv/**,.git/**,docs/**,backend/tests/**,backend/__pycache__/**,backend/app/__pycache__/**,**/__pycache__/**,**/*.test.py,**/test_*.py,.pytest_cache/**,.ruff_cache/**,docker-compose.yml,backend/Dockerfile,frontend/Dockerfile,frontend/nginx.conf}"
+          "excludeFiles": "{frontend/**,.venv/**,.git/**,docs/**,backend/tests/**,**/__pycache__/**,.pytest_cache/**,.ruff_cache/**}"
         }
       }
     },
