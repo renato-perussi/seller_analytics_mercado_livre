@@ -13,7 +13,8 @@
       }
     },
     "frontend": {
-      "root": "frontend/"
+      "root": "frontend/",
+      "framework": "vite"
     }
   },
   "rewrites": [
