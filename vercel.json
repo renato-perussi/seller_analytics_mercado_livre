@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "backend": {
+      "root": ".",
+      "framework": "fastapi",
+      "entrypoint": "backend.app.main:app",
+      "functions": {
+        "backend/app/main.py": {
+          "maxDuration": 10,
+          "excludeFiles": "{frontend/**,node_modules/**,.venv/**,.git/**,docs/**,backend/tests/**,backend/__pycache__/**,backend/app/__pycache__/**,**/__pycache__/**,**/*.test.py,**/test_*.py,.pytest_cache/**,.ruff_cache/**,docker-compose.yml,backend/Dockerfile,frontend/Dockerfile,frontend/nginx.conf}"
+        }
+      }
+    },
+    "frontend": {
+      "root": "frontend/"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "frontend" } }
+  ]
+}
